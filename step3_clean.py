@@ -56,7 +56,6 @@ for col in ["Division", "Region", "Ship Mode", "Product Name", "State/Province",
         df[col] = df[col].astype(str).map(clean_text)
 
 df["Division"] = df["Division"].str.title()
-# Make dashes consistent: "Wonka Bar -Nutty" -> "Wonka Bar - Nutty"
 df["Product Name"] = df["Product Name"].str.replace(r"\s*-\s*", " - ", regex=True)
 
 # ---------- 5. Remove duplicates ----------
@@ -80,7 +79,6 @@ log.append(("Rows removed: zero or negative Sales", before - len(df)))
 before = len(df)
 df = df[df["Cost"] >= 0]
 log.append(("Rows removed: negative Cost", before - len(df)))
-pd.DataFrame(log, columns=["Step", "Rows"]).to_csv("outputs/cleaning_log.csv", index=False)
 
 # ---------- 7. Handle missing / invalid Units ----------
 df.loc[df["Units"] <= 0, "Units"] = np.nan
@@ -102,6 +100,7 @@ os.makedirs("outputs", exist_ok=True)
 df = df.reset_index(drop=True)
 df.to_csv("outputs/clean_data.csv", index=False)
 log.append(("Rows in clean file", len(df)))
+pd.DataFrame(log, columns=["Step", "Rows"]).to_csv("outputs/cleaning_log.csv", index=False)
 
 # ---------- 10. Report ----------
 print("\n========== CLEANING REPORT ==========")
@@ -113,4 +112,4 @@ print("Divisions:", sorted(df["Division"].unique()))
 print("Products:", df["Product Name"].nunique())
 print("\nTotal Sales:", round(df["Sales"].sum(), 2))
 print("Total Gross Profit:", round(df["Gross Profit"].sum(), 2))
-print("\nSaved: outputs/clean_data.csv")
+print("\nSaved: outputs/clean_data.csv and outputs/cleaning_log.csv")

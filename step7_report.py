@@ -99,8 +99,15 @@ def para(doc, text, bold=False, italic=False, size=None, align=None, color=None,
     return p
 
 def bullets(doc, items, style="List Bullet"):
-    for it in items:
-        doc.add_paragraph(it, style=style)
+    if style == "List Number":
+        # manual numbering so each list starts again at 1
+        for i, it in enumerate(items, 1):
+            p = doc.add_paragraph(f"{i}.  {it}")
+            p.paragraph_format.left_indent = Inches(0.35)
+            p.paragraph_format.first_line_indent = Inches(-0.25)
+    else:
+        for it in items:
+            doc.add_paragraph(it, style="List Bullet")
 
 def table(doc, header, rows, font=9):
     t = doc.add_table(rows=1, cols=len(header))
@@ -372,14 +379,17 @@ table(doc, ["Product", "Sales", "Units", "Gross Profit", "Margin %", "Profit/Uni
         f"{r['Gross Margin %']:.1f}", money2(r["Profit per Unit"]), f"{r['Margin Volatility']:.1f}"]
        for _, r in by_profit.iterrows()], font=8)
 doc.add_heading("Appendix B: Streamlit dashboard", 1)
-para(doc, "The interactive dashboard (app.py) provides four modules:")
+para(doc, "The interactive dashboard (app.py) provides these modules:")
 bullets(doc, [
-    "Product Overview: margin leaderboard, profit contribution chart and product table.",
-    "Division Performance: revenue versus profit comparison and margin distribution.",
-    "Cost vs Margin: cost-sales scatter plot and margin-risk flags.",
-    "Profit Concentration: Pareto charts and dependency indicators.",
+    "Insights: automatic findings, margin gauge and a sales-and-margin treemap.",
+    "Products: margin leaderboard, profit contribution, profit per unit and product table.",
+    "Divisions: revenue versus profit, revenue and profit share, and margin distribution.",
+    "Cost vs Margin: cost-sales scatter plot, flag summary and margin-risk list.",
+    "Concentration: Pareto charts and dependency indicators.",
+    "Trends: monthly trend, division-by-month margin heatmap, region and state views.",
+    "Data: downloadable filtered results.",
 ])
-para(doc, "Users can filter by date range and division, set a margin threshold, and search for products. Run it with: streamlit run app.py")
+para(doc, "Users can filter by date range, division and region, set a margin threshold, and search for products. Run it with: streamlit run app.py")
 
 doc.save("outputs/Nassau_Profitability_Research_Paper.docx")
 

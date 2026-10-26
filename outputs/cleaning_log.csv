@@ -5,3 +5,7 @@ Rows removed: invalid/missing Order Date,0
 Rows removed: missing Sales/Cost/Profit,0
 Rows removed: zero or negative Sales,0
 Rows removed: negative Cost,0
+Missing/invalid Units filled with product median,0
+Rows removed: Units still missing,0
+"Rows where Gross Profit != Sales - Cost (kept, for review)",0
+Rows in clean file,10194

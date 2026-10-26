@@ -21,7 +21,6 @@ prod["Cost % of Sales"] = prod["Cost"] / prod["Sales"] * 100
 prod["Revenue Contribution %"] = prod["Sales"] / prod["Sales"].sum() * 100
 prod["Profit Contribution %"] = prod["Gross Profit"] / prod["Gross Profit"].sum() * 100
 
-# Margin volatility = how much monthly margin jumps around (standard deviation)
 df["Month"] = df["Order Date"].dt.to_period("M")
 monthly = (df.groupby(["Product Name", "Month"])
              .agg({"Sales": "sum", "Gross Profit": "sum"}).reset_index())
@@ -153,7 +152,7 @@ for data, col, n80, name, fn in [(rev_p, "Sales", n80_rev, "Revenue", "06_pareto
     plt.tight_layout(); plt.savefig(f"outputs/charts/{fn}"); plt.close()
 
 # =====================================================
-# 8. PRINT SUMMARY (copy this and send it to me)
+# 8. PRINT SUMMARY
 # =====================================================
 pd.set_option("display.width", 200); pd.set_option("display.max_columns", 20)
 print("\n===== OVERALL =====")
@@ -169,7 +168,9 @@ print(f"Products giving 80% of revenue: {n80_rev} of {n_prod} ({n80_rev/n_prod*1
 print(f"Products giving 80% of profit : {n80_prof} of {n_prod} ({n80_prof/n_prod*100:.0f}%)")
 print(f"Top product share of profit: {prof_p['Gross Profit'].iloc[0]/prof_p['Gross Profit'].sum()*100:.1f}%")
 print("\n===== CATEGORIES =====")
-print(prod.groupby("Category")["Product Name"].apply(list).to_string())
+for c, g in prod.groupby("Category"):
+    print(f"{c}: {', '.join(g['Product Name'])}")
 print("\n===== ACTION FLAGS =====")
-print(prod.groupby("Action Flag")["Product Name"].apply(list).to_string())
+for c, g in prod.groupby("Action Flag"):
+    print(f"{c}: {', '.join(g['Product Name'])}")
 print("\nCharts saved in outputs/charts/ | Tables saved in outputs/")
