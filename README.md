@@ -51,5 +51,5 @@ Only gross profit is available (no shipping, marketing or overhead costs). Some 
 
 ## Author
 Gopal Krushna Panda, B.Tech CSE, Centurion University of Technology and Management
-[LinkedIn](https://www.linkedin.com/in/gopal-krushna-panda-878457364) | [GitHub](https://github.com/GOPALKRUSHNAPANDA)git add .
+[LinkedIn](https://www.linkedin.com/in/gopal-krushna-panda-878457364) | [GitHub](https://github.com/GOPALKRUSHNAPANDA)git add .**Live dashboard:**https://t4mu2kwpcnihi5qb7g2djj.streamlit.app/
 git status
